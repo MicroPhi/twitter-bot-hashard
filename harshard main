@@ -1,0 +1,68 @@
+from twython import Twython
+
+import time
+import os
+print (os.getcwd())
+
+consumer_key = #masqué
+consumer_secret = #masqué
+access_token = #masqué
+access_token_secret = #masqué
+
+twitter = Twython(
+	consumer_key,
+	consumer_secret,
+	access_token,
+	access_token_secret
+)
+
+#debut du code
+
+
+t0=time.time()
+tweeted=0
+i=0
+
+with open("sauvegarde.txt", "r") as fichier:
+	i=fichier.read()
+
+i=int(i)
+
+x=i
+somme=0
+tweet=""
+
+while(True):
+	
+	tweet = str(i) + "\n" 
+	x=i
+	somme =0 
+
+	while x > 0 :
+		somme += x % 10
+		tweet += str(x%10) + " + "
+		x = x//10
+
+	tweet = tweet[:-2] + "= " + str(somme) +"\n"
+
+
+	if (i % somme) == 0 :
+		tweet += str(i) + " / " + str(somme) + " = " + str(i/somme) + "\n" + str(i) + " is a harshad number"
+
+		tweeted=0
+		while (tweeted==0):
+			if (time.time()-t0 >= 1800 ):
+				twitter.update_status(status=tweet)
+				print(tweet + "\n")
+				tweeted=1
+				t0=time.time()
+
+	
+	i += 1
+
+	with open("sauvegarde.txt", "w") as fichier:
+		fichier.write(str(i))
+
+	
+
+
